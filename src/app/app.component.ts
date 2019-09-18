@@ -84,4 +84,35 @@ export class AppComponent implements OnInit {
       });
     });
   }
+
+  update() {
+    const lastNotification = this.createdNotifications[this.createdNotifications.length - 1];
+    if (!lastNotification) {
+      return;
+    }
+    lastNotification.set('text', new Date().toISOString());
+    lastNotification.save();
+  }
+
+  enter() {
+    const lastNotification = this.createdNotifications[this.createdNotifications.length - 1];
+    if (!lastNotification) {
+      return;
+    }
+
+    const user = Parse.User.current();
+    lastNotification.relation('recipients').add(user);
+    lastNotification.save();
+  }
+
+  leave() {
+    const lastNotification = this.createdNotifications[this.createdNotifications.length - 1];
+    if (!lastNotification) {
+      return;
+    }
+
+    const user = Parse.User.current();
+    lastNotification.relation('recipients').remove(user);
+    lastNotification.save();
+  }
 }

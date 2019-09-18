@@ -9,6 +9,9 @@
 
   <div>
     <button (click)="create()">Create New notification</button>
+    <button (click)="update()">Trigger 'update' event on last notification</button>
+    <button (click)="enter()">Trigger 'enter' event on last notification</button>
+    <button (click)="leave()">Trigger 'leave' event on last notification</button>
     Just created:
     <ul>
       <li *ngFor="let n of createdNotifications">{{ n | json }}</li>

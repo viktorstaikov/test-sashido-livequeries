@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
         subscription.on('open', () => {
           console.log('************ subscription opened');
         });
+
         subscription.on('create', e => {
           console.log('************ object created', e);
           this._ngZone.run(() => {
@@ -41,6 +42,28 @@ export class AppComponent implements OnInit {
           });
           alert('New Notification came - ' + JSON.stringify(e));
         });
+        subscription.on('update', e => {
+          console.log('************ object update', e);
+          this._ngZone.run(() => {
+            this.notifications++;
+          });
+          alert('New Notification came - ' + JSON.stringify(e));
+        });
+        subscription.on('enter', e => {
+          console.log('************ object enter', e);
+          this._ngZone.run(() => {
+            this.notifications++;
+          });
+          alert('New Notification came - ' + JSON.stringify(e));
+        });
+        subscription.on('leave', e => {
+          console.log('************ object leave', e);
+          this._ngZone.run(() => {
+            this.notifications++;
+          });
+          alert('New Notification came - ' + JSON.stringify(e));
+        });
+
         subscription.on('close', () => {
           console.log('************ subscription closed');
         });

@@ -9,7 +9,11 @@ import * as Parse from 'parse';
 export class AppComponent implements OnInit {
   title = 'test-sashido-livequeries';
 
-  notifications = 0;
+  createdNotifications = [];
+  newNotifications = [];
+  updatedNotifications = [];
+  enteredNotifications = [];
+  leftNotifications = [];
 
   constructor(private _ngZone: NgZone) {}
 
@@ -38,35 +42,45 @@ export class AppComponent implements OnInit {
         subscription.on('create', e => {
           console.log('************ object created', e);
           this._ngZone.run(() => {
-            this.notifications++;
+            this.newNotifications.push(e);
           });
-          alert('New Notification came - ' + JSON.stringify(e));
         });
         subscription.on('update', e => {
           console.log('************ object update', e);
           this._ngZone.run(() => {
-            this.notifications++;
+            this.updatedNotifications.push(e);
           });
-          alert('New Notification came - ' + JSON.stringify(e));
         });
         subscription.on('enter', e => {
           console.log('************ object enter', e);
           this._ngZone.run(() => {
-            this.notifications++;
+            this.enteredNotifications.push(e);
           });
-          alert('New Notification came - ' + JSON.stringify(e));
         });
         subscription.on('leave', e => {
           console.log('************ object leave', e);
           this._ngZone.run(() => {
-            this.notifications++;
+            this.leftNotifications.push(e);
           });
-          alert('New Notification came - ' + JSON.stringify(e));
         });
 
         subscription.on('close', () => {
           console.log('************ subscription closed');
         });
+      });
+    });
+  }
+
+  create() {
+    const user = Parse.User.current();
+
+    const notification = new Parse.Object('Notifications');
+    notification.set('text', new Date().toISOString());
+    notification.relation('recipients').add(user);
+
+    notification.save().then(r => {
+      this._ngZone.run(() => {
+        this.createdNotifications.push(r);
       });
     });
   }
